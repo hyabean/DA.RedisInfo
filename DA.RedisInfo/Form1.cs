@@ -34,7 +34,7 @@ namespace DA.RedisInfo
         System.Threading.Timer timer;
         ServiceStack.Redis.RedisClient client;
 
-        List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
+        List<Dictionary<string, string>> tmpList = new List<Dictionary<string, string>>();
 
         private void btnStartCollect_Click(object sender, EventArgs e)
         {
@@ -44,7 +44,7 @@ namespace DA.RedisInfo
             }
 
             Save();
-            list = new List<Dictionary<string, string>>();
+            tmpList = new List<Dictionary<string, string>>();
 
             ServiceStack.Redis.RedisClient client = new RedisClient(tbIP.Text, int.Parse(tbPort.Text), tbPassword.Text);
 
@@ -55,11 +55,11 @@ namespace DA.RedisInfo
                     Dictionary<string, string> infos = client.Info;
                     infos["Current_Time"] = DateTime.Now.ToString();
 
-                    list.Add(infos);
+                    tmpList.Add(infos);
 
                     var ss = client.Exists("MyCat");
 
-                    UpdatetbCount(list.Count.ToString());
+                    UpdatetbCount(tmpList.Count.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -98,12 +98,12 @@ namespace DA.RedisInfo
 
         private void btnAnalysis_Click(object sender, EventArgs e)
         {
-            if (this.list != null && this.list.Count < 2)
+            if (this.tmpList != null && this.tmpList.Count < 2)
             {
                 MessageBox.Show("没有足够的数据");
                 return;
             }
-            var result = RedisAnalysis.GetQPS(this.list);
+            var result = RedisAnalysis.GetQPS(this.tmpList);
 
             this.dataGridView1.DataSource = result;
         }
@@ -115,9 +115,9 @@ namespace DA.RedisInfo
 
         private void Save()
         {
-            if (this.list!= null && this.list.Count >= 2)
+            if (this.tmpList!= null && this.tmpList.Count >= 2)
             {
-                var jsonString = JsonConvert.SerializeObject(list);
+                var jsonString = JsonConvert.SerializeObject(tmpList);
 
                 var fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Guid.NewGuid().ToString("N") + ".txt";
 
@@ -132,6 +132,25 @@ namespace DA.RedisInfo
 
                 File.WriteAllText(filePath, jsonString);
             }
+        }
+
+        private void btnSelectFileAnalysis_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                var str = File.ReadAllText(dialog.FileName);
+
+                var list = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(str);
+
+                var result = RedisAnalysis.GetQPS(list);
+
+                this.dataGridView1.DataSource = result;
+
+            }
+
+
         }
     }
 }

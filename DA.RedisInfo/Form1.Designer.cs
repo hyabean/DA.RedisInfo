@@ -39,19 +39,20 @@
             this.btnAnalysis = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.tbCount = new System.Windows.Forms.TextBox();
             this.timeColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.QPS = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.InputBps = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OnputBps = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.InstantaneousInputKbps = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.InstantaneousOnputKbps = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbCount = new System.Windows.Forms.TextBox();
+            this.btnSelectFileAnalysis = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnStartCollect
             // 
-            this.btnStartCollect.Location = new System.Drawing.Point(304, 12);
+            this.btnStartCollect.Location = new System.Drawing.Point(382, 12);
             this.btnStartCollect.Name = "btnStartCollect";
             this.btnStartCollect.Size = new System.Drawing.Size(75, 23);
             this.btnStartCollect.TabIndex = 0;
@@ -61,7 +62,7 @@
             // 
             // btnStopCollect
             // 
-            this.btnStopCollect.Location = new System.Drawing.Point(388, 12);
+            this.btnStopCollect.Location = new System.Drawing.Point(463, 12);
             this.btnStopCollect.Name = "btnStopCollect";
             this.btnStopCollect.Size = new System.Drawing.Size(75, 23);
             this.btnStopCollect.TabIndex = 0;
@@ -121,7 +122,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(469, 12);
+            this.btnSave.Location = new System.Drawing.Point(611, 12);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
@@ -144,13 +145,6 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(775, 367);
             this.dataGridView1.TabIndex = 3;
-            // 
-            // tbCount
-            // 
-            this.tbCount.Location = new System.Drawing.Point(134, 44);
-            this.tbCount.Name = "tbCount";
-            this.tbCount.Size = new System.Drawing.Size(79, 21);
-            this.tbCount.TabIndex = 1;
             // 
             // timeColumn
             // 
@@ -191,6 +185,23 @@
             this.InstantaneousOnputKbps.HeaderText = "InstantaneousOnputKbps";
             this.InstantaneousOnputKbps.Name = "InstantaneousOnputKbps";
             // 
+            // tbCount
+            // 
+            this.tbCount.Location = new System.Drawing.Point(304, 14);
+            this.tbCount.Name = "tbCount";
+            this.tbCount.Size = new System.Drawing.Size(72, 21);
+            this.tbCount.TabIndex = 1;
+            // 
+            // btnSelectFileAnalysis
+            // 
+            this.btnSelectFileAnalysis.Location = new System.Drawing.Point(94, 41);
+            this.btnSelectFileAnalysis.Name = "btnSelectFileAnalysis";
+            this.btnSelectFileAnalysis.Size = new System.Drawing.Size(91, 23);
+            this.btnSelectFileAnalysis.TabIndex = 0;
+            this.btnSelectFileAnalysis.Text = "选择文件分析";
+            this.btnSelectFileAnalysis.UseVisualStyleBackColor = true;
+            this.btnSelectFileAnalysis.Click += new System.EventHandler(this.btnSelectFileAnalysis_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -205,6 +216,7 @@
             this.Controls.Add(this.tbIP);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnStopCollect);
+            this.Controls.Add(this.btnSelectFileAnalysis);
             this.Controls.Add(this.btnAnalysis);
             this.Controls.Add(this.btnStartCollect);
             this.Name = "Form1";
@@ -234,6 +246,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn OnputBps;
         private System.Windows.Forms.DataGridViewTextBoxColumn InstantaneousInputKbps;
         private System.Windows.Forms.DataGridViewTextBoxColumn InstantaneousOnputKbps;
+        private System.Windows.Forms.Button btnSelectFileAnalysis;
     }
 }
 
