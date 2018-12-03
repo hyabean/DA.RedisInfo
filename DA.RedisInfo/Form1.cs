@@ -56,9 +56,7 @@ namespace DA.RedisInfo
                     infos["Current_Time"] = DateTime.Now.ToString();
 
                     tmpList.Add(infos);
-
-                    var ss = client.Exists("MyCat");
-
+                    
                     UpdatetbCount(tmpList.Count.ToString());
                 }
                 catch (Exception ex)
@@ -147,10 +145,9 @@ namespace DA.RedisInfo
                 var result = RedisAnalysis.GetQPS(list);
 
                 this.dataGridView1.DataSource = result;
-
             }
 
-
+            dialog.Dispose();
         }
     }
 }
