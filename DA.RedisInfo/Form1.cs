@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Newtonsoft.Json;
-using ServiceStack.Redis;
-
-namespace DA.RedisInfo
+﻿namespace DA.RedisInfo
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Windows.Forms;
+    using Newtonsoft.Json;
+    using ServiceStack.Redis;
+
+    /// <summary>
+    /// Defines the <see cref="Form1" />
+    /// </summary>
     public partial class Form1 : Form
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Form1"/> class.
+        /// </summary>
         public Form1()
         {
             InitializeComponent();
@@ -24,6 +24,11 @@ namespace DA.RedisInfo
             this.Load += Form1_Load;
         }
 
+        /// <summary>
+        /// The Form1_Load
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void Form1_Load(object sender, EventArgs e)
         {
             tbIP.Text = ConfigurationManager.AppSettings["RedisIp"];
@@ -31,11 +36,26 @@ namespace DA.RedisInfo
             tbPassword.Text = ConfigurationManager.AppSettings["RedisPassword"];
         }
 
-        System.Threading.Timer timer;
-        ServiceStack.Redis.RedisClient client;
+        /// <summary>
+        /// Defines the timer
+        /// </summary>
+        internal System.Threading.Timer timer;
 
-        List<Dictionary<string, string>> tmpList = new List<Dictionary<string, string>>();
+        /// <summary>
+        /// Defines the client
+        /// </summary>
+        internal ServiceStack.Redis.RedisClient client;
 
+        /// <summary>
+        /// Defines the tmpList
+        /// </summary>
+        internal List<Dictionary<string, string>> tmpList = new List<Dictionary<string, string>>();
+
+        /// <summary>
+        /// The btnStartCollect_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnStartCollect_Click(object sender, EventArgs e)
         {
             if (timer != null)
@@ -56,16 +76,20 @@ namespace DA.RedisInfo
                     infos["Current_Time"] = DateTime.Now.ToString();
 
                     tmpList.Add(infos);
-                    
+
                     UpdatetbCount(tmpList.Count.ToString());
                 }
-                catch (Exception ex)
+                catch (ServiceStack.Redis.RedisException ex)
                 {
                     Debug.WriteLine(ex.Message);
                 }
             }, 0, 0, 10 * 1000);
         }
 
+        /// <summary>
+        /// The UpdatetbCount
+        /// </summary>
+        /// <param name="textInfo">The textInfo<see cref="string"/></param>
         private void UpdatetbCount(string textInfo)
         {
             if (tbCount.InvokeRequired)
@@ -78,6 +102,11 @@ namespace DA.RedisInfo
             }
         }
 
+        /// <summary>
+        /// The btnStopCollect_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnStopCollect_Click(object sender, EventArgs e)
         {
             if (timer != null)
@@ -94,6 +123,11 @@ namespace DA.RedisInfo
             }
         }
 
+        /// <summary>
+        /// The btnAnalysis_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnAnalysis_Click(object sender, EventArgs e)
         {
             if (this.tmpList != null && this.tmpList.Count < 2)
@@ -106,14 +140,22 @@ namespace DA.RedisInfo
             this.dataGridView1.DataSource = result;
         }
 
+        /// <summary>
+        /// The btnSave_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnSave_Click(object sender, EventArgs e)
         {
             Save();
         }
 
+        /// <summary>
+        /// The Save
+        /// </summary>
         private void Save()
         {
-            if (this.tmpList!= null && this.tmpList.Count >= 2)
+            if (this.tmpList != null && this.tmpList.Count >= 2)
             {
                 var jsonString = JsonConvert.SerializeObject(tmpList);
 
@@ -132,6 +174,11 @@ namespace DA.RedisInfo
             }
         }
 
+        /// <summary>
+        /// The btnSelectFileAnalysis_Click
+        /// </summary>
+        /// <param name="sender">The sender<see cref="object"/></param>
+        /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnSelectFileAnalysis_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
