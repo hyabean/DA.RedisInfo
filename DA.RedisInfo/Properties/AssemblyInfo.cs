@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 //请将此类型的 ComVisible 特性设置为 true。
 [assembly: ComVisible(false)]
 
-[assembly: NeutralResourcesLanguage(zh_cn)]
+[assembly: NeutralResourcesLanguage("zh_cn")]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
 [assembly: Guid("af06f430-17a7-4263-bc18-fe412e3e2a77")]
