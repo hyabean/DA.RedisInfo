@@ -13,19 +13,19 @@
         /// The GetQPS
         /// </summary>
         /// <param name="redisInfos">The redisInfos<see cref="IEnumerable{IDictionary{string, string}}"/></param>
-        /// <returns>The <see cref="List{QPSModel}"/></returns>
-        public static List<QPSModel> GetQPS(IEnumerable<IDictionary<string, string>> redisInfos)
+        /// <returns>The <see cref="List{QpsModel}"/></returns>
+        public static List<QpsModel> GetQPS(IEnumerable<IDictionary<string, string>> redisInfos)
         {
-            List<QPSModel> list = new List<QPSModel>();
+            var list = new List<QpsModel>();
 
-            List<IDictionary<string, string>> filtedList = redisInfos.Where(dic => dic.ContainsKey("uptime_in_seconds")).OrderBy(dic => int.Parse(dic["uptime_in_seconds"])).ToList();
+            var filtedList = redisInfos.Where(dic => dic.ContainsKey("uptime_in_seconds")).OrderBy(dic => int.Parse(dic["uptime_in_seconds"])).ToList();
 
-            if (filtedList.Count() < 2)
+            if (filtedList.Count < 2)
             {
-                return new List<QPSModel>();
+                return new List<QpsModel>();
             }
 
-            for (int i = 0; i < filtedList.Count() - 1; i++)
+            for (var i = 0; i < filtedList.Count - 1; i++)
             {
                 var time1 = long.Parse(filtedList[i]["uptime_in_seconds"]);
                 var processCount1 = long.Parse(filtedList[i]["total_commands_processed"]);
@@ -43,13 +43,11 @@
                     var inputbyteKbps = (inputbyteKbps2 - inputbyteKbps1) / (time2 - time1);
                     var onputbyteKbps = (onputbyteKbps2 - onputbyteKbps1) / (time2 - time1);
 
-                    list.Add(new QPSModel(DateTime.Parse(filtedList[i + 1]["Current_Time"]), qps, inputbyteKbps,
+                    list.Add(new QpsModel(DateTime.Parse(filtedList[i + 1]["Current_Time"]), qps, inputbyteKbps,
                         onputbyteKbps,
                         double.Parse(filtedList[i]["instantaneous_input_kbps"]),
                         double.Parse(filtedList[i]["instantaneous_output_kbps"])));
                 }
-
-
             }
 
             return list;
@@ -57,12 +55,12 @@
     }
 
     /// <summary>
-    /// Defines the <see cref="QPSModel" />
+    /// Defines the <see cref="QpsModel" />
     /// </summary>
-    public class QPSModel
+    public class QpsModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="QPSModel"/> class.
+        /// Initializes a new instance of the <see cref="QpsModel"/> class.
         /// </summary>
         /// <param name="endTime">The endTime<see cref="DateTime"/></param>
         /// <param name="qPS">The qPS<see cref="long"/></param>
@@ -70,7 +68,7 @@
         /// <param name="onputBps">The onputBps<see cref="long"/></param>
         /// <param name="instantaneousInputKbps">The instantaneousInputKbps<see cref="double"/></param>
         /// <param name="instantaneousOnputKbps">The instantaneousOnputKbps<see cref="double"/></param>
-        public QPSModel(DateTime endTime, long qPS, long inputBps, long onputBps,
+        public QpsModel(DateTime endTime, long qPS, long inputBps, long onputBps,
             double instantaneousInputKbps, double instantaneousOnputKbps)
         {
             EndTime = endTime;

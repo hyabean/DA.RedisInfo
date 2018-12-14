@@ -66,13 +66,13 @@
             Save();
             tmpList = new List<Dictionary<string, string>>();
 
-            ServiceStack.Redis.RedisClient client = new RedisClient(tbIP.Text, int.Parse(tbPort.Text), tbPassword.Text);
+            client = new RedisClient(tbIP.Text, int.Parse(tbPort.Text), tbPassword.Text);
 
-            timer = new System.Threading.Timer((obj) =>
+            timer = new System.Threading.Timer((_) =>
             {
                 try
                 {
-                    Dictionary<string, string> infos = client.Info;
+                    var infos = client.Info;
                     infos["Current_Time"] = DateTime.Now.ToString();
 
                     tmpList.Add(infos);
@@ -130,11 +130,12 @@
         /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnAnalysis_Click(object sender, EventArgs e)
         {
-            if (this.tmpList != null && this.tmpList.Count < 2)
+            if (this.tmpList?.Count < 2)
             {
                 MessageBox.Show("没有足够的数据");
                 return;
             }
+
             var result = RedisAnalysis.GetQPS(this.tmpList);
 
             this.dataGridView1.DataSource = result;
@@ -155,20 +156,20 @@
         /// </summary>
         private void Save()
         {
-            if (this.tmpList != null && this.tmpList.Count >= 2)
+            if (tmpList?.Count >= 2)
             {
                 var jsonString = JsonConvert.SerializeObject(tmpList);
 
                 var fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Guid.NewGuid().ToString("N") + ".txt";
 
-                string folderPath = Path.Combine(Application.StartupPath, "data");
+                var folderPath = Path.Combine(Application.StartupPath, "data");
 
                 if (!Directory.Exists(folderPath))
                 {
                     Directory.CreateDirectory(folderPath);
                 }
 
-                string filePath = Path.Combine(Application.StartupPath, "data", fileName);
+                var filePath = Path.Combine(Application.StartupPath, "data", fileName);
 
                 File.WriteAllText(filePath, jsonString);
             }
@@ -181,7 +182,7 @@
         /// <param name="e">The e<see cref="EventArgs"/></param>
         private void btnSelectFileAnalysis_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
+            var dialog = new OpenFileDialog();
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
